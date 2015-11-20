@@ -15,40 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.gateway.identityasserter.filter;
+package org.apache.hadoop.gateway.identityasserter;
 
-import java.security.Principal;
-import java.util.Set;
-import java.util.ArrayList;
-import javax.security.auth.Subject;
-
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.hadoop.gateway.security.GroupPrincipal;
 import org.apache.hadoop.gateway.identityasserter.common.filter.CommonIdentityAssertionFilter;
+import org.apache.hadoop.gateway.security.GroupPrincipal;
+
+import javax.security.auth.Subject;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class GroupsToLowerAssertionFilter extends CommonIdentityAssertionFilter {
   
-  /* (non-Javadoc)
-   * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
-   */
   @Override
-  public void init(FilterConfig filterConfig) throws ServletException {
+  public String[] mapGroupPrincipals( String mappedPrincipalName, Subject subject ) {
+    ArrayList<String> groups = new ArrayList<String>();
+    Set<GroupPrincipal> currentGroups = subject.getPrincipals( GroupPrincipal.class );
+    for ( GroupPrincipal group : currentGroups ) {
+      groups.add( group.getName().toLowerCase() );
+    }
+    return groups.toArray( new String[groups.size()] );
   }
 
-  /* (non-Javadoc)
-   * @see org.apache.hadoop.gateway.identityasserter.common.filter.AbstractIdentityAssertionFilter#mapGroupPrincipals(java.lang.String, javax.security.auth.Subject)
-   */
-  @Override
-  public String[] mapGroupPrincipals(String mappedPrincipalName, Subject subject) {
-    ArrayList<String> groups = new ArrayList<String>();
-    Set<?> currentGroups = subject.getPrincipals(GroupPrincipal.class);
-    for (Object obj : currentGroups) {
-      groups.add(((Principal)obj).getName().toLowerCase());
-    }
-    
-    return groups.toArray(new String[groups.size()]);
-  }
 }

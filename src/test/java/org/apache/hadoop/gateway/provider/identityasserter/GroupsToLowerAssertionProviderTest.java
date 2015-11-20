@@ -17,39 +17,18 @@
  */
 package org.apache.hadoop.gateway.provider.identityasserter;
 
-import org.easymock.EasyMock;
-import org.easymock.IMocksControl;
-import org.junit.Before;
+import junit.framework.TestCase;
+import org.apache.hadoop.gateway.identityasserter.GroupsToLowerAssertionFilter;
+import org.apache.hadoop.gateway.security.GroupPrincipal;
+import org.apache.hadoop.gateway.security.PrimaryPrincipal;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.security.AccessController;
-import java.security.Principal;
 import javax.security.auth.Subject;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-import junit.framework.TestCase;
+import java.security.Principal;
 import java.util.Set;
 
-import org.apache.hadoop.gateway.security.PrimaryPrincipal;
-import org.apache.hadoop.gateway.security.GroupPrincipal;
-import  org.apache.hadoop.gateway.identityasserter.filter.GroupsToLowerAssertionFilter;
-
-/**
- * Tests for PseudoAuth Federation Provider.
- */
 public class GroupsToLowerAssertionProviderTest extends TestCase {
-
-  @Before
-  public void setUp() throws Exception {
-  }
 
   @Test
   public void testGroupsMapping() throws Exception {
@@ -59,9 +38,9 @@ public class GroupsToLowerAssertionProviderTest extends TestCase {
     Set<Principal> principals = subject.getPrincipals();
     principals.add(new PrimaryPrincipal("guest"));
     principals.add(new GroupPrincipal("ADMIN"));
-    
+
     String[] groups = filter.mapGroupPrincipals("guest", subject);
     assertTrue("Expected group not found.", groups[0].equals("admin"));
-    
+
   }
 }
