@@ -15,12 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.gateway.identityasserter.deploy;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+package org.apache.hadoop.gateway.identityasserter;
 
 import org.apache.hadoop.gateway.deploy.DeploymentContext;
 import org.apache.hadoop.gateway.deploy.ProviderDeploymentContributorBase;
@@ -29,33 +24,28 @@ import org.apache.hadoop.gateway.descriptor.ResourceDescriptor;
 import org.apache.hadoop.gateway.topology.Provider;
 import org.apache.hadoop.gateway.topology.Service;
 
-public class GroupsToLowerAssertionContributor extends
-    ProviderDeploymentContributorBase {
+import java.util.List;
+
+public class GroupsToLowerAssertionContributor extends ProviderDeploymentContributorBase {
+
   private static final String ROLE = "identity-assertion";
   private static final String NAME = "GroupsToLower";
-  private static final String ASSERTION_FILTER_CLASSNAME = "org.apache.hadoop.gateway.identityasserter.filter.GroupsToLowerAssertionFilter";
+  private static final String FILTER = GroupsToLowerAssertionFilter.class.getName();
 
-  @Override
   public String getRole() {
     return ROLE;
   }
 
-  @Override
   public String getName() {
     return NAME;
   }
 
-  @Override
-  public void contributeFilter(DeploymentContext context, Provider provider, Service service, 
-      ResourceDescriptor resource, List<FilterParamDescriptor> params) {
-    // blindly add all the provider params as filter init params
-    if (params == null) {
-      params = new ArrayList<FilterParamDescriptor>();
-    }
-    Map<String, String> providerParams = provider.getParams();
-    for(Entry<String, String> entry : providerParams.entrySet()) {
-      params.add( resource.createFilterParam().name( entry.getKey().toLowerCase() ).value( entry.getValue() ) );
-    }
-    resource.addFilter().name( getName() ).role( getRole() ).impl( ASSERTION_FILTER_CLASSNAME ).params( params );
+  public void contributeFilter(
+      DeploymentContext context, Provider provider, Service service,
+      ResourceDescriptor resource, List<FilterParamDescriptor> params ) {
+
+    resource.addFilter().name( getName() ).role( getRole() ).impl( FILTER ).params( params );
+
   }
+
 }

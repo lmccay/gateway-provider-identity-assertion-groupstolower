@@ -16,4 +16,4 @@
 # limitations under the License.
 ##########################################################################
 
-org.apache.hadoop.gateway.preauth.deploy.GroupsToLowerAssertionContributor
+org.apache.hadoop.gateway.identityasserter.GroupsToLowerAssertionContributor
