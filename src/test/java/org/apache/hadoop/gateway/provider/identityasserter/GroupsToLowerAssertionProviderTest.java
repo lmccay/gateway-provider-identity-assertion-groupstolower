@@ -37,12 +37,10 @@ public class GroupsToLowerAssertionProviderTest extends TestCase {
     Subject subject = new Subject();
     Set<Principal> principals = subject.getPrincipals();
     principals.add(new PrimaryPrincipal("guest"));
-    //principals.add(new GroupPrincipal("ADMIN"));
-    principals.add(new GroupPrincipal("admin"));
+    principals.add(new GroupPrincipal("ADMIN"));
 
     String[] groups = filter.mapGroupPrincipals("guest", subject);
-    //assertTrue("Expected group not found.", groups[0].equals("admin"));
-    assertTrue("Expected group not found.", groups[0].equals("ADMIN"));
-    
+    assertTrue("Expected group not found.", groups[0].equals("admin"));
+
   }
 }
