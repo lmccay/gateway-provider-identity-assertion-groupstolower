@@ -19,7 +19,7 @@ gateway-provider-identity-assertion-groupstolower
 
 Companion project for blog on adding a simple identity assertion provider to Apache Knox
 
-[Article](AddingIdentityAssertionProvider.md)
+[Article](http://kminder.github.io/knox/2015/11/20/identity-assertion.html)
 
 Clone or fork this project and build it with:
 
